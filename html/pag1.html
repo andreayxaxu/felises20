@@ -8,6 +8,55 @@
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-    hola
+  <!-- MÚSICA -->
+  <audio id="musica" loop>
+    <source src="../etc/musica1.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button class="music-btn" id="musicBtn" onclick="toggleMusica()">🔇 Música</button>
+  <input class="musica-barra" type="range" id="volumen" min="0" max="1" step="0.01" value="0.3" oninput="document.getElementById('musica').volume = this.value" />
+
+
+
+  <footer>
+    <!-- BOTÓN VOLVER -->
+    <button class="btn-volver" onclick="volverAlInicio()">← BACK</button>
+  </footer>
+
+  <!-- SCRIPT-->
+  <script src="../js/cumple.js"></script>
+  <script src="../js/sobre.js"></script>
+
+  <script>
+    window.addEventListener('load', () => {
+      const musica = document.getElementById('musica');
+      const barraVolumen = document.getElementById('volumen'); 
+
+      const tiempoGuardado = localStorage.getItem('musicaTiempo');
+      const volumenGuardado = localStorage.getItem('musicaVolumen');
+      const estabaSonando = localStorage.getItem('musicaSonando');
+
+      if (musica) {
+        if (tiempoGuardado) {
+          musica.currentTime = parseFloat(tiempoGuardado);
+        }
+
+        const vol = volumenGuardado !== null ? parseFloat(volumenGuardado) : 0.3;
+        musica.volume = vol;
+
+        if (barraVolumen) {
+          barraVolumen.value = vol;
+        }
+
+        if (estabaSonando === 'true') {
+          musica.play().catch(error => console.log("Esperando interacción del usuario"));
+        }
+      }
+    });
+
+    document.getElementById('volumen').addEventListener('input', (e) => {
+      localStorage.setItem('musicaVolumen', e.target.value);
+    });
+  </script>
 </body>
 </html>
